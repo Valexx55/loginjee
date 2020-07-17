@@ -35,7 +35,7 @@ public class Consulta extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		Usuario usuario_aux = null;
 		List<Usuario> lu = new ArrayList<Usuario>();
 		
@@ -57,6 +57,7 @@ public class Consulta extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		
 	
 	}
 	
@@ -66,7 +67,11 @@ public class Consulta extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
+		
+		System.out.println("llamada a DOPOST");
+		//request.getRequestDispatcher("/index.html").forward(request, response);
+		//response.sendRedirect("index.html");
 	}
 
 }
