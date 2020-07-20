@@ -86,6 +86,8 @@ public class Login extends HttpServlet {
 				{
 					System.out.println("hay un usuario que coincide por el nombre y por la contraseña");
 					status = HttpURLConnection.HTTP_OK;//200
+					response.getWriter().append("hola");
+					response.setContentType("text/plain;charset=UTF-8");
 				} else 
 				{
 					System.out.println("hay un usuario que coincide por el nombre pero NO por la contraseña");
