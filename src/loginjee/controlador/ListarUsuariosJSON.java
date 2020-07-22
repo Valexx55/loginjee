@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import loginjee.Usuario;
+import loginjee.bean.Usuario;
 import loginjee.servicio.UsuarioService;
 
 /**
