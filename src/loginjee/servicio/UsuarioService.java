@@ -14,7 +14,7 @@ public class UsuarioService {
 	
 	private final static Logger log = Logger.getLogger("mylog");
 	
-	public List<Usuario> listarUsuarios ()
+	public List<Usuario> listarUsuarios () throws Exception
 	{
 		List<Usuario> lUsuarios = null;
 		UsuarioDAO usuarioDAO = new UsuarioDAO();

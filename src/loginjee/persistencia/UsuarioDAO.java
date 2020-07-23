@@ -3,6 +3,8 @@ package loginjee.persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,11 +18,39 @@ public class UsuarioDAO {
 	
 	private final static Logger log = Logger.getLogger("mylog");
 	private static final String INSTRUCCION_CONSULTA_USUARIO = "SELECT * FROM hedima.usuarios WHERE (nombre = ?);";
+	private static final String INSTRUCCION_CONSULTA_TODOS_USUARIO = "SELECT * FROM hedima.usuarios;";
 	
-	public List<Usuario> obtenerTodos ()
+	public List<Usuario> obtenerTodos () throws Exception
 	{
-		//AQUÍ METEMOS LO DEL API JDBC : CONNECTION, RESULTSET, ETC.
-		return null;
+		List<Usuario> lista_usuarios = null;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		Usuario usuario_aux = null;
+		
+		
+			try {
+				
+				connection = BaseDeDatos.getConnection();
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(INSTRUCCION_CONSULTA_TODOS_USUARIO);
+				
+				lista_usuarios = new ArrayList<Usuario>();//creo la lista vacía
+				while (resultSet.next()) {
+					usuario_aux = new Usuario(resultSet);
+					lista_usuarios.add(usuario_aux);
+				}
+				
+			}catch (Exception e) {
+				log.error("Error al acceder a la base de datos", e);
+				throw e;
+			}finally {
+				BaseDeDatos.liberarRecursos(connection, statement, resultSet);
+			
+			}
+		
+		return lista_usuarios;
+		
 	}
 	
 	/**

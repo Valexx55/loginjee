@@ -13,40 +13,25 @@ const URL_LISTAR_USUARIOS_JSON = "/loginjee/ListarUsuariosJSON"
 var xhr = new XMLHttpRequest();
 function listarUsuariosServidor() {
 	alert("Entrando en listarUsuariosServidor");
-	/*var name = document.getElementById("nombre").value;
-	var password = document.getElementById("pwd").value;
-
-	var usuario = {
-		nombre : name,
-		pwd : password
-	};
-
-	var jsonusuario = JSON.stringify(usuario);
-	console.log(jsonusuario);*/
-	//si en vio info dsede el cliente al servidor debe usar post
-
-	//TODO usar AJAX para enviar al servidor los datos
-	//xhr.open("POST", URL_LOGIN_RELATIVA);
+	xhr.open("GET", URL_LISTAR_USUARIOS_JSON);
 	//deberíamos setear el content-type
-	/*xhr.setRequestHeader("Content-type", "application/json;UTF-8");
-	xhr.onreadystatechange = respuestaLogin;//programar el callback
-	xhr.send(jsonusuario);*/
+	xhr.onreadystatechange = respuestaListaUsuariosJson;//programar el callback
+	xhr.send(null);
 	//console.log ("la respuesta del soervidor ha sido ..");
 
 }
 
-function respuestaLogin() {
+function respuestaListaUsuariosJson() {
 	//esta función será invocada cuando vuelva del servidor
 	if (xhr.readyState == 4) {
 		console.log("La respuesta del servidor ha llegado");
 		if (xhr.status == 200) {
-			alert("Logueado con éxito");
-			location="menu.html";
+			alert("Lista de usuarios recibida");
+			console.log (xhr.responseText);
 		} else if (xhr.status == 204) {
-			alert("Nombre incorrecto. No existe el usuario");
-		} else if (xhr.status == 403) {
-			alert("Password incorrecta.");
-		} else if (xhr.status == 500) {
+			alert("La lista está vacía");
+			}
+		else if (xhr.status == 500) {
 			alert("Ha habido un error. Intentelo más tarde");
 		}
 	}
