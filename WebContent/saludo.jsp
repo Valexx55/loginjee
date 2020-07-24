@@ -17,6 +17,10 @@ y devolvemos una página con su nombre
 
 http://localhost:8081/loginjee/saludo.jsp?usuario=1
 -->
+<!-- TODO haced un SERVLET QUE RX UN ID DE UN USUARIO POR PARÁMETROS (URL)
+Y MOSTRARLO POR PANTALLA CON SYSOUT EN EL DOGET
+
+HACED LAS CAPAS DE SERVICIO Y PERSISTENCIA POR SEPARADO - SI SE PUEDE- -->
 	<h1>
 		
 		<%

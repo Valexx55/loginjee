@@ -19,6 +19,36 @@ public class UsuarioDAO {
 	private final static Logger log = Logger.getLogger("mylog");
 	private static final String INSTRUCCION_CONSULTA_USUARIO = "SELECT * FROM hedima.usuarios WHERE (nombre = ?);";
 	private static final String INSTRUCCION_CONSULTA_TODOS_USUARIO = "SELECT * FROM hedima.usuarios;";
+	private static final String INSTRUCCION_CONSULTA_USUARIO_POR_ID = "SELECT * from hedima.usuarios where idusuarios = ?;";
+	
+	
+	public Usuario leerUsuarioBD (int id) throws Exception
+	{
+		Usuario usuario = null;
+		Connection connection = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try{
+			String consulta_SQL = INSTRUCCION_CONSULTA_USUARIO_POR_ID;
+			connection = BaseDeDatos.getConnection();
+			st = connection.prepareStatement(consulta_SQL);
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			
+			if (rs.next())
+			{
+				usuario = new Usuario(rs);
+			}
+		}catch (Exception e)
+		{
+			e.printStackTrace();
+			throw e;
+		} finally{
+			BaseDeDatos.liberarRecursos(connection, st, rs);
+		}
+		return usuario;
+	}
 	
 	public List<Usuario> obtenerTodos () throws Exception
 	{

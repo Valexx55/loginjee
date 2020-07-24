@@ -14,6 +14,17 @@ public class UsuarioService {
 	
 	private final static Logger log = Logger.getLogger("mylog");
 	
+	
+	public Usuario obtenerUsuario(int id_usuario) throws Exception
+	{
+		Usuario usuario = null;
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+			usuario = usuarioDAO.leerUsuarioBD(id_usuario);
+		
+		return usuario;
+	}
+	
 	public List<Usuario> listarUsuarios () throws Exception
 	{
 		List<Usuario> lUsuarios = null;
