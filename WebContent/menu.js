@@ -20,22 +20,34 @@ function listarUsuariosServidor() {
 	//console.log ("la respuesta del soervidor ha sido ..");
 
 }
+function obtenerDetalle ()
+{
+	console.log ("tenemos que obtener detalle de nombre");
+	//usar el this
+	console.log ("Ha tocado el id = " + this.id);
+	//TODO 1.ir al servidor y pedirle la info de un usuario dándole el id
+	//2. recibir el json del usuario del servidor y mostrar su detalle
+}
 
 //{"id":1,"nombre":"vale","pwd":"valeri"}
 function crearTRUsuario (usuario)
 {
 	let fila_usuario = document.createElement ("tr");
-	let columna_id = document.createElement ("td");
+	//let columna_id = document.createElement ("td");
 	let columna_nombre = document.createElement ("td");
-	let columna_pwd = document.createElement ("td");
+	//let columna_pwd = document.createElement ("td");
 	
-	columna_id.innerHTML = usuario.id;
+	//columna_id.innerHTML = usuario.id;
 	columna_nombre.innerHTML = usuario.nombre;
-	columna_pwd.innerHTML = usuario.pwd;
+	//columna_pwd.innerHTML = usuario.pwd;
 	
-	fila_usuario.appendChild (columna_id);
+	//columna_id.setAttribute ("hidden", true);
+	columna_nombre.id = usuario.id;
+	columna_nombre.addEventListener("click", obtenerDetalle);
+	
+	//fila_usuario.appendChild (columna_id);
 	fila_usuario.appendChild (columna_nombre);
-	fila_usuario.appendChild (columna_pwd);
+	//fila_usuario.appendChild (columna_pwd);
 	
 	console.log ("ID USUARIO = " + usuario.id);
 	console.log ("NOMBRE USUARIO = " + usuario.nombre);
