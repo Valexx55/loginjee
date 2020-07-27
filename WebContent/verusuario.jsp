@@ -7,6 +7,6 @@
 <title>página de mostrar un usuario</title>
 </head>
 <body>
-${usuario.nombre} ${usuario.pwd} ID ${usuario.id}
+NOMBRE ${usuario.nombre} PWD ${usuario.pwd} ID ${usuario.id}
 </body>
 </html>

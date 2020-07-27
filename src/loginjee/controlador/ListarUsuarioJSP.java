@@ -13,14 +13,14 @@ import loginjee.servicio.UsuarioService;
 /**
  * Servlet implementation class ListarUsuario
  */
-@WebServlet("/ListarUsuario")
-public class ListarUsuario extends HttpServlet {
+@WebServlet("/ListarUsuarioJSP")
+public class ListarUsuarioJSP extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListarUsuario() {
+    public ListarUsuarioJSP() {
         super();
         // TODO Auto-generated constructor stub
     }
