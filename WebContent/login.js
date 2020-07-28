@@ -2,12 +2,56 @@
  * 
  */
 
+
 //todo OBTENER LOS DATOS DEL FORMULARIO LOGIN Y PWD INTRODUCIDOS
 //POR EL CLIENTE
 //Y ENVIARLOS AL SERVIDOR, PARA COMPROBAR SI ESE USUARIO EXISTE
 //O ESTÁ REGISTRADO
-const URL_LOGIN = "http://localhost:8080/loginjee/Login"
-const URL_LOGIN_RELATIVA = "/loginjee/Login"
+const URL_LOGIN = "http://localhost:8080/loginjee/Login";
+const URL_LOGIN_RELATIVA = "/loginjee/Login";
+const CLAVE_GUARDAR_CREDENCIALES = "guardar_credenciales";
+const CLAVE_CREDENCIALES = "credenciales_usuario";
+	
+
+onload = cargarPagina;
+
+
+function leerCookieActivado ()
+{
+	let activado_recordar = 'false';
+	
+	let activado = localStorage.getItem(CLAVE_GUARDAR_CREDENCIALES);
+	if (activado!=null)
+		{
+			activado_recordar = activado;
+		}
+	return activado_recordar;
+}
+
+function marcarDesmarcarCheckBox (activado)
+{
+	let elemento_cb = document.getElementById ("cajita");
+	if (activado=='true')
+		{
+		elemento_cb.setAttribute ('checked', true);
+		} else {
+			elemento_cb.setAttribute ('checked', false);
+		}
+	
+}
+
+function cargarPagina ()
+{
+	console.log ("cargando página");
+	let activado_recordar = leerCookieActivado();
+	marcarDesmarcarCheckBox (activado_recordar);
+	//TODO SI ACTIVADO_RECORDAR --> RECUERAR LAS CREDENCIALES Y MOSTRARLAS	
+	
+	
+}
+
+	
+
 
 //https://www.bing.com/search?q=realm+adrid&cvid=6da69e504f24467c997e6a1210719880&FORM=ANNTA1&PC=U531
 //SERVICIO ES SINÓNIMO DE Servlet en JAVA

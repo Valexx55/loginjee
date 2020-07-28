@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="utf-8">
 <title>Formulario</title>
 <link rel="stylesheet" type="text/css" href="estilos.css"/>
 <script src="login.js"></script>
@@ -18,8 +18,14 @@
       <input placeholder="Your Password" id="pwd" type="password" tabindex="2" required>
     </fieldset>
     <fieldset>
-      <button name="submit"  onclick="servidorlogin()">Submit</button>
+      <input type="checkbox" name="recordarpwd" id="cajita">
+      <label for="recordarpwd" id="lrecordarpwd"> Recordar credenciales</label>
     </fieldset>
+    <fieldset>
+      <button name="submit"  onclick="servidorlogin()">ENVIAR</button>
+    </fieldset>
+    
+    
     
     
   

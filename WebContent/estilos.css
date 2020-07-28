@@ -27,6 +27,12 @@ td
 	cursor: pointer;
 }
 
+#lrecordarpwd
+{
+	font-size: 16px;
+	color: #000;
+}
+
 #detalleusuario
 {
 	font-size: 20px;
