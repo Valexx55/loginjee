@@ -33,11 +33,40 @@ function marcarDesmarcarCheckBox (activado)
 	let elemento_cb = document.getElementById ("cajita");
 	if (activado=='true')
 		{
-		elemento_cb.setAttribute ('checked', true);
+		elemento_cb.checked=true; //marcando la caja
 		} else {
-			elemento_cb.setAttribute ('checked', false);
+			elemento_cb.checked = false; //desmarcando la caja
 		}
 	
+}
+
+function recuperarCredenciales ()
+{
+	let usuario;
+	
+		let u_json = localStorage.getItem(CLAVE_CREDENCIALES);
+		usuario = JSON.parse (u_json);
+	
+	return usuario;
+}
+
+function mostrarCredenciales (usuario)
+{
+	document.getElementById ("nombre").value = usuario.nombre;
+	document.getElementById ("pwd").value = usuario.pwd;
+	
+}
+
+function actualizarCookieRecordar ()
+{
+	console.log ("Toca check");
+	let elemento_cb = document.getElementById ("cajita");
+	if (elemento_cb.checked)//==true
+		{
+		localStorage.setItem(CLAVE_GUARDAR_CREDENCIALES, 'true');
+		} else {
+			localStorage.setItem(CLAVE_GUARDAR_CREDENCIALES, 'false');
+		}
 }
 
 function cargarPagina ()
@@ -46,11 +75,22 @@ function cargarPagina ()
 	let activado_recordar = leerCookieActivado();
 	marcarDesmarcarCheckBox (activado_recordar);
 	//TODO SI ACTIVADO_RECORDAR --> RECUERAR LAS CREDENCIALES Y MOSTRARLAS	
-	
+	if (activado_recordar=='true')
+		{
+			let usuario = recuperarCredenciales ();
+			if (usuario!=null)
+				{
+				mostrarCredenciales (usuario);
+				}
+			
+		}
 	
 }
 
-	
+function guardarCredenciales (jsonusuario)
+{
+	localStorage.setItem(CLAVE_CREDENCIALES, jsonusuario);
+}
 
 
 //https://www.bing.com/search?q=realm+adrid&cvid=6da69e504f24467c997e6a1210719880&FORM=ANNTA1&PC=U531
@@ -67,6 +107,12 @@ function servidorlogin() {
 	};
 
 	var jsonusuario = JSON.stringify(usuario);
+	
+	if (leerCookieActivado()=='true')//si quiere recordar
+		{
+		guardarCredenciales (jsonusuario);
+		}
+	
 	console.log(jsonusuario);
 	//si en vio info dsede el cliente al servidor debe usar post
 

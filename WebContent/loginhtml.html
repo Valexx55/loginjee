@@ -12,13 +12,13 @@
     
     <h4>Formulario</h4>
     <fieldset>
-      <input placeholder="Your name" id="nombre" type="text" tabindex="1" required autofocus>
+      <input placeholder="Nombre" id="nombre" type="text" tabindex="1" required autofocus>
     </fieldset>
     <fieldset>
-      <input placeholder="Your Password" id="pwd" type="password" tabindex="2" required>
+      <input placeholder="Contraseña" id="pwd" type="password" tabindex="2" required>
     </fieldset>
     <fieldset>
-      <input type="checkbox" name="recordarpwd" id="cajita">
+      <input onclick="actualizarCookieRecordar()" type="checkbox" name="recordarpwd" id="cajita">
       <label for="recordarpwd" id="lrecordarpwd"> Recordar credenciales</label>
     </fieldset>
     <fieldset>
