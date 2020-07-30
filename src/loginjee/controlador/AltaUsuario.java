@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import loginjee.bean.Usuario;
+import loginjee.servicio.UsuarioService;
+
 /**
  * Servlet implementation class AltaUsuario
  */
@@ -14,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AltaUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private final static Logger log = Logger.getLogger("mylog");
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,9 +41,23 @@ public class AltaUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO RECIBIR LOS DATOS DEL USUARIO Y DARLES DE ALTA
-		System.out.println("NOMBRE RX = "+request.getParameter("nombre"));
-		System.out.println("PWD RX = "+ request.getParameter("pwd"));
+		String nombre = request.getParameter("nombre");
+		String pwd = request.getParameter("pwd");
+		//TODO VALIDAR EN EL SERVIDOR
+		System.out.println("NOMBRE RX = "+nombre);
+		System.out.println("PWD RX = "+ pwd);
 		//una vez dado de alta, podemos enviarlo a login o menu
+		Usuario usuario = new Usuario(nombre, pwd);
+		log.debug("Insertamos en AltaUsuario " + usuario);
+		UsuarioService usuarioService = new UsuarioService();
+		try {
+			usuarioService.altaUsuario(usuario);
+			//TODO DIRIGIR A UNA PÁGINA DE MENU
+		}catch (Exception e) {
+			// TODO: handle exception
+			log.error("Error en alta usuario", e);
+			//TODO DIRIGIR A UNA PÁGINA DE ERROR
+		}
 		
 	}
 

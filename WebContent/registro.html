@@ -14,15 +14,15 @@
 		<h4>ALTA NUEVO USUARIO</h4>
 		<form action="/loginjee/AltaUsuario" method="post">
 			<fieldset>
-				<input placeholder="Nombre" oninput="modificadoNombre()" name="nombre" id="nombre" type="text" tabindex="1"
+				<input placeholder="Nombre" oninput="modificadoFormulario()" name="nombre" id="nombre" type="text" tabindex="1"
 					required autofocus>
 			</fieldset>
 			<fieldset>
-				<input placeholder="Contraseña"oninput="modificadoPwd()" name="pwd" id="pwd" type="password"
+				<input placeholder="Contraseña" oninput="modificadoFormulario()" name="pwd" id="pwd" type="password"
 					tabindex="2" required>
 			</fieldset>
 			<fieldset>
-				<input type="submit" value="ALTA" disabled>
+				<input type="submit" id="botonalta" value="ALTA" disabled>
 			</fieldset>
 		</form>
 

@@ -58,5 +58,16 @@ public class UsuarioService {
 		return num_dev;
 		
 	}
+	
+	public void altaUsuario (Usuario usuario) throws Exception
+	{
+		UsuarioDAO usuarioDAO = null;
+		
+			usuarioDAO = new UsuarioDAO();
+			usuarioDAO.altaUsuarioBD(usuario);
+			log.debug("Salimos del servicio altaUsuario ");
+			
+		
+	}
 
 }

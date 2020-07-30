@@ -20,6 +20,7 @@ public class UsuarioDAO {
 	private static final String INSTRUCCION_CONSULTA_USUARIO = "SELECT * FROM hedima.usuarios WHERE (nombre = ?);";
 	private static final String INSTRUCCION_CONSULTA_TODOS_USUARIO = "SELECT * FROM hedima.usuarios;";
 	private static final String INSTRUCCION_CONSULTA_USUARIO_POR_ID = "SELECT * from hedima.usuarios where idusuarios = ?;";
+	private static final String INSTRUCCION_INSERCION_USUARIO = "INSERT INTO hedima.usuarios (nombre, password) VALUES (?, ?);";
 	
 	
 	public Usuario leerUsuarioBD (int id) throws Exception
@@ -48,6 +49,28 @@ public class UsuarioDAO {
 			BaseDeDatos.liberarRecursos(connection, st, rs);
 		}
 		return usuario;
+	}
+	
+	public void altaUsuarioBD (Usuario usuario) throws Exception
+	{
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = BaseDeDatos.getConnection();
+			preparedStatement = connection.prepareStatement(INSTRUCCION_INSERCION_USUARIO);
+			preparedStatement.setString(1, usuario.getNombre());
+			preparedStatement.setString(2, usuario.getPwd());
+			int resultado = preparedStatement.executeUpdate();// siempre executeUpdate para INSERTAR; DELETE; o UPDATE para SELECT executeQuery()
+			log.debug("resultado insertar = " + resultado);
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			log.error("Error en la insercion de usuario " + usuario , e);
+			throw e;
+		}finally {
+			BaseDeDatos.liberarRecursos(connection, preparedStatement, null);
+		}
 	}
 	
 	public List<Usuario> obtenerTodos () throws Exception
