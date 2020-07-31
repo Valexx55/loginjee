@@ -13,6 +13,11 @@
   text-rendering: optimizeLegibility;
 }
 
+#errornombre
+{
+	color:red;
+}
+
 li
 {
 	cursor: pointer;
