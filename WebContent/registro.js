@@ -1,9 +1,10 @@
 //EL NOMBRE DEL USUARIO TIENE QUE SER MINIMO DE 2
 //LA PWD DEL USUARIO TIENE QUE SER DE AL MENOS 2
-//TODO controlar que cuando el nombre NO esté disponible, el botón esté deshabilitado
+//controlado que nombre no puede estar repe
 
 const ULR_COMPROBAR_NOMBRE_DISPONIBLE = "/loginjee/ExisteNombre"
 var xhr = new XMLHttpRequest();
+var nombredisponible = false;
 
 function comprobarNombreDisponible() {
 	console.log ("Comprobando nombre ...");
@@ -19,6 +20,13 @@ function comprobarNombreDisponible() {
 		xhr.send(null);
 		}
 }
+
+function limpiarFormularioYSetearFocus()
+{
+	document.getElementById("nombre").value = '';
+	document.getElementById("pwd").value = '';
+	document.getElementById("nombre").focus();
+}
 function respuestaNombreDisponible ()
 {
 	if (xhr.readyState == 4) {
@@ -28,11 +36,16 @@ function respuestaNombreDisponible ()
 			console.log ("disponible");
 			let elemento_error = document.getElementById("errornombre");
 			elemento_error.innerHTML = "";
+			nombredisponible = true;
 		} else if (xhr.status == 409) {
 			//NO esta disponible
 			console.log (" NO disponible");
 			let elemento_error = document.getElementById("errornombre");
-			elemento_error.innerHTML = "¡Nombre no disponible!";
+			let nombre_no_valido = document.getElementById('nombre').value;
+			elemento_error.innerHTML = nombre_no_valido +" Nombre no disponible";
+			nombredisponible =false;
+			limpiarFormularioYSetearFocus();
+			
 		} else if (xhr.status == 500) {
 			console.log ("ERROR");
 		}
@@ -74,7 +87,7 @@ function modificadoFormulario()
 	let nuevo_nombre = document.getElementById("nombre").value;
 	let nuevo_pwd = document.getElementById("pwd").value;
 	
-	if (nombreCorrecto(nuevo_nombre)&&(pwdCorrecto(nuevo_pwd)))
+	if ((nombredisponible)&&nombreCorrecto(nuevo_nombre)&&(pwdCorrecto(nuevo_pwd)))
 		{
 			activarBotonEnvio();
 		} else {
