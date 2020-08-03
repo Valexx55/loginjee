@@ -3,7 +3,10 @@ package loginjee.controlador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Iterator;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,6 +62,19 @@ public class Login extends HttpServlet {
 		
 		return usuario;
 	}
+	
+	private void mostrarMapaUsuarios ()
+	{
+		ServletContext servletContext = this.getServletContext();
+		Map<Integer, Usuario> mu = (Map<Integer, Usuario>) servletContext.getAttribute("er_mapa");
+		Iterator<Integer> it = mu.keySet().iterator();
+		Usuario usuario_aux = null;
+		while (it.hasNext())
+		{
+			usuario_aux = mu.get(it.next());
+			log.debug(usuario_aux.toString());
+		}
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -66,12 +82,22 @@ public class Login extends HttpServlet {
 		log.debug("LLEGÓ PETICIÓN POST");
 		int status = 0;
 
+		mostrarMapaUsuarios ();
+		
 		Usuario usuario = obtenerUsuario(request);//si es !=null
 		UsuarioService usuarioService = new UsuarioService();
 		try {
 			int num_dev = usuarioService.existeUsuario(usuario);
 			switch (num_dev) {
 			case 0: status = HttpURLConnection.HTTP_OK;//existe
+			//TODO incrementar el numero de logins
+			//acceder al contexto, OBTENER EL CONTADOR, sumarle uno
+			/*ServletContext sc = this.getServletContext();//cojo la saca
+			int nlogins = (int)sc.getAttribute("NUM_LOGINS");
+			log.debug("Num logins = " + nlogins);
+			nlogins = nlogins + 1;
+			sc.setAttribute("NUM_LOGINS", nlogins);*/
+			
 				break;
 			case 1: status = HttpURLConnection.HTTP_FORBIDDEN;//existe nombre pero pwd mal
 				break;

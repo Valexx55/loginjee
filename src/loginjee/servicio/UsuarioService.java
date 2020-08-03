@@ -1,6 +1,7 @@
 package loginjee.servicio;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -13,6 +14,13 @@ public class UsuarioService {
 	// Y ESTA CLASE, INVOCARÁ A LA PERSISTENCIA (EN CASO DE SER NECESARIO)
 
 	private final static Logger log = Logger.getLogger("mylog");
+	
+	//TODO en la clase usuarioService, CREAR UN MÉTODO QUE ME DEVUELVA UM MAPA DE USUARIO DEL TIPO Map<Integer, Usuario>
+	
+	public Map<Integer, Usuario> obtenerMapaUsuarios ()
+	{
+		return null;
+	}
 
 	public Usuario obtenerUsuario(int id_usuario) throws Exception {
 		Usuario usuario = null;

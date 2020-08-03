@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +24,38 @@ public class UsuarioDAO {
 	private static final String INSTRUCCION_CONSULTA_USUARIO_POR_ID = "SELECT * from hedima.usuarios where idusuarios = ?;";
 	private static final String INSTRUCCION_INSERCION_USUARIO = "INSERT INTO hedima.usuarios (nombre, password) VALUES (?, ?);";
 	
+	
+	public Map<Integer, Usuario> obtenerMapaUsuariosBD () throws Exception
+	{
+		Map<Integer, Usuario> mu = new HashMap<Integer, Usuario>();
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		Usuario usuario_aux = null;
+		
+			try {
+				
+				connection = BaseDeDatos.getConnection();
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(INSTRUCCION_CONSULTA_TODOS_USUARIO);
+				
+				while (resultSet.next()) {
+					usuario_aux = new Usuario(resultSet);
+					mu.put(usuario_aux.getId(), usuario_aux);
+				}
+				
+			}catch (Exception e) {
+				log.error("Error al acceder a la base de datos", e);
+				throw e;
+			}finally {
+				BaseDeDatos.liberarRecursos(connection, statement, resultSet);
+			
+			}
+		
+		return mu;
+		
+	}
+
 	
 	public Usuario leerUsuarioBD (int id) throws Exception
 	{
