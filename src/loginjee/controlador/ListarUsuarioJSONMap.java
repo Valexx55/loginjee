@@ -2,7 +2,9 @@ package loginjee.controlador;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +19,8 @@ import loginjee.servicio.UsuarioService;
 /**
  * Servlet implementation class ListarUsuario
  */
-@WebServlet("/ListarUsuarioJSON")
-public class ListarUsuarioJSON extends HttpServlet {
+@WebServlet("/ListarUsuarioJSONMap")
+public class ListarUsuarioJSONMap extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -34,7 +36,7 @@ public class ListarUsuarioJSON extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListarUsuarioJSON() {
+    public ListarUsuarioJSONMap() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -53,36 +55,27 @@ public class ListarUsuarioJSON extends HttpServlet {
 		String id_usuario_string = request.getParameter("id");
 		int id_usuario = Integer.parseInt(id_usuario_string);
 		System.out.println("ID rx =  "+ id_usuario);
-		//MVC 
-		/**
-		 * Controlador --> Servlet
-		 * Modelo --> Servicio y Persistencia
-		 * Vista --> JSP
-		 */
-		UsuarioService usuarioService = new UsuarioService();
-		try {
-			Usuario u = usuarioService.obtenerUsuario(id_usuario);
-			if (u!=null)
-			{
-			System.out.println("Usuario obtenido = " + u);
-			//TODO PASARLE AL JSP EL BEAN DE USUARIO
-			
-			//HACER UN JSON Y DEVOLVERLO
+		//1 coger el mapa del contexto
+		ServletContext sc = this.getServletContext();
+		Map<Integer, Usuario> mapa_usuarios = (Map<Integer, Usuario>) sc.getAttribute("er_mapa");
+		//del mapa, pillar el usuario
+		Usuario usuario = mapa_usuarios.get(id_usuario);
+		if (usuario!=null)
+		{
+			System.out.println("Usuario encontrado");
 			Gson gson = new Gson();
-			String usuario_json = gson.toJson(u);
+			String usuario_json = gson.toJson(usuario);
 			
 			response.getWriter().append(usuario_json);
 			response.setContentType("application/json");
 			response.setStatus(HttpURLConnection.HTTP_OK);
-			} else {
-				response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
-			}
 			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+		}else {
+			System.out.println("Usuario No encontrado");
+			response.setStatus(HttpURLConnection.HTTP_NO_CONTENT);
 		}
+		
+		
 		
 	}
 

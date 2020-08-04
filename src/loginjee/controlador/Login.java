@@ -81,8 +81,9 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("LLEGÓ PETICIÓN POST");
 		int status = 0;
+		boolean redirigir = false;
 
-		mostrarMapaUsuarios ();
+		//mostrarMapaUsuarios ();
 		
 		Usuario usuario = obtenerUsuario(request);//si es !=null
 		UsuarioService usuarioService = new UsuarioService();
@@ -92,11 +93,16 @@ public class Login extends HttpServlet {
 			case 0: status = HttpURLConnection.HTTP_OK;//existe
 			//TODO incrementar el numero de logins
 			//acceder al contexto, OBTENER EL CONTADOR, sumarle uno
-			/*ServletContext sc = this.getServletContext();//cojo la saca
+			ServletContext sc = this.getServletContext();//cojo la saca
 			int nlogins = (int)sc.getAttribute("NUM_LOGINS");
 			log.debug("Num logins = " + nlogins);
 			nlogins = nlogins + 1;
-			sc.setAttribute("NUM_LOGINS", nlogins);*/
+			sc.setAttribute("NUM_LOGINS", nlogins);
+			if (nlogins==5)
+			{
+				redirigir=true;
+				status = HttpURLConnection.HTTP_MOVED_TEMP;
+			}
 			
 				break;
 			case 1: status = HttpURLConnection.HTTP_FORBIDDEN;//existe nombre pero pwd mal
@@ -110,7 +116,13 @@ public class Login extends HttpServlet {
 			status = HttpURLConnection.HTTP_INTERNAL_ERROR;
 		}
 		log.debug("DEVOLVEMOS STATUS " + status);
+		/*if (redirigir)
+		{
+			//response.sendRedirect("https://euw.leagueoflegends.com/es-es/");
+		} else {*/
+		
 		response.setStatus(status);
+	
 	}
 
 }

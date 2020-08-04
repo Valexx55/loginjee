@@ -49,8 +49,8 @@ public class EscuchaInicioYFinContexto implements ServletContextListener {
     	ServletContext sc = arg0.getServletContext(); 
     	//TODO contar todas las veces que alguien se Loguea
     	//por cualquier usuario
-    	//int total_logins = 0;
-    	//sc.setAttribute("NUM_LOGINS", total_logins);
+    	int total_logins = 0;
+    	sc.setAttribute("NUM_LOGINS", total_logins);
     	
     	
     	//GUARDAR EL MAPA EN EL CONTEXTO

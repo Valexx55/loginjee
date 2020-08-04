@@ -38,8 +38,17 @@ public class FiltroLogin implements Filter {
 
 		// pass the request along the filter chain
 		System.out.println("Antes de llamar a Login");
+		//TOMAR TIEMPO T1
+		long t1 = System.currentTimeMillis();
+		//System system = new System
 		chain.doFilter(request, response);
 		System.out.println("A la vuelta de Login");
+		long t2 = System.currentTimeMillis();
+		//TOMAR TIEMPO T2
+		//tardado en ejecutar es T2-T1
+		long total = t2-t1;
+		System.out.println("Login ha tardado en ejecutarse " + total + " ms ");
+			
 	}
 
 	/**
