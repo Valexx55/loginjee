@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import loginjee.bean.Usuario;
 import loginjee.servicio.UsuarioService;
@@ -25,10 +26,12 @@ public class ListarUsuarioJSP extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-   /*TODO haced un SERVLET QUE RX UN ID DE UN USUARIO POR PARÁMETROS (URL)
-    Y MOSTRARLO POR PANTALLA CON SYSOUT EN EL DOGET
-
-    HACED LAS CAPAS DE SERVICIO Y PERSISTENCIA POR SEPARADO - SI SE PUEDE-*/
+   /**
+    * PONED UN LÍMITE DE USO DEL SERVICIO ListarUsuarioJSP
+    * LA tercera vez que un mismo usuario acceda a este servlet, 
+    * deberá ser redirifido a una página de error, que le informe
+    * que ha excedido el uso de este servicio
+    */
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,6 +48,7 @@ public class ListarUsuarioJSP extends HttpServlet {
 		 * Modelo --> Servicio y Persistencia
 		 * Vista --> JSP
 		 */
+		
 		UsuarioService usuarioService = new UsuarioService();
 		try {
 			Usuario u = usuarioService.obtenerUsuario(id_usuario);

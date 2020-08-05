@@ -97,6 +97,7 @@ public class Login extends HttpServlet {
 				HttpSession session = request.getSession(true);//este es el saquito de la sesión
 				log.debug("El ID de la sesión es " + session.getId());
 				session.setAttribute("NOMBRE_USUARIO", usuario.getNombre());
+				session.setAttribute("NVECES_JSP", 0);
 				//session.invalidate();
 				
 				ServletContext sc = this.getServletContext();// cojo la saca

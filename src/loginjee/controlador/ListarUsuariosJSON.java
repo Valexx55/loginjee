@@ -30,6 +30,8 @@ public class ListarUsuariosJSON extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
+	
+	
 	public ListarUsuariosJSON() {
 		super();
 		// TODO Auto-generated constructor stub
