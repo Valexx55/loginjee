@@ -1,4 +1,4 @@
-package loginjee.controlador;
+package loginjee.controlador.filtros;
 
 import java.io.IOException;
 import javax.servlet.Filter;
