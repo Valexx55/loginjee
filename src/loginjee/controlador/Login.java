@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -26,103 +27,108 @@ import loginjee.servicio.UsuarioService;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	
+
 	private final static Logger log = Logger.getLogger("mylog");
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Login() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public Login() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	private Usuario obtenerUsuario (HttpServletRequest request)
-	{
+	private Usuario obtenerUsuario(HttpServletRequest request) {
 		Usuario usuario = null;
-		
+
 		try {
-			BufferedReader br = request.getReader();//accedo al cuerpo del mensaje HTTP 
-			String string_cuerpo = br.readLine();//leo el cuerpo
+			BufferedReader br = request.getReader();// accedo al cuerpo del mensaje HTTP
+			String string_cuerpo = br.readLine();// leo el cuerpo
 			System.out.println("CUERPO RX = " + string_cuerpo);
 			Gson gson = new Gson();
 			usuario = gson.fromJson(string_cuerpo, Usuario.class);
 			System.out.println(usuario);
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-			
-		
+
 		return usuario;
 	}
-	
-	private void mostrarMapaUsuarios ()
-	{
+
+	private void mostrarMapaUsuarios() {
 		ServletContext servletContext = this.getServletContext();
 		Map<Integer, Usuario> mu = (Map<Integer, Usuario>) servletContext.getAttribute("er_mapa");
 		Iterator<Integer> it = mu.keySet().iterator();
 		Usuario usuario_aux = null;
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			usuario_aux = mu.get(it.next());
 			log.debug(usuario_aux.toString());
 		}
 	}
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		log.debug("LLEGÓ PETICIÓN POST");
 		int status = 0;
-		boolean redirigir = false;
 
-		//mostrarMapaUsuarios ();
-		
-		Usuario usuario = obtenerUsuario(request);//si es !=null
+		// mostrarMapaUsuarios ();
+
+		Usuario usuario = obtenerUsuario(request);// si es !=null
 		UsuarioService usuarioService = new UsuarioService();
 		try {
 			int num_dev = usuarioService.existeUsuario(usuario);
 			switch (num_dev) {
-			case 0: status = HttpURLConnection.HTTP_OK;//existe
-			//TODO incrementar el numero de logins
-			//acceder al contexto, OBTENER EL CONTADOR, sumarle uno
-			ServletContext sc = this.getServletContext();//cojo la saca
-			int nlogins = (int)sc.getAttribute("NUM_LOGINS");
-			log.debug("Num logins = " + nlogins);
-			nlogins = nlogins + 1;
-			sc.setAttribute("NUM_LOGINS", nlogins);
-			if (nlogins==5)
-			{
-				redirigir=true;
-				status = HttpURLConnection.HTTP_MOVED_TEMP;
+			case 0:
+				status = HttpURLConnection.HTTP_OK;// existe
+				//VAMOS A CREAR LA SESIÓN PARA ESE USUARIO :)
+				HttpSession session = request.getSession(true);//este es el saquito de la sesión
+				log.debug("El ID de la sesión es " + session.getId());
+				session.setAttribute("NOMBRE_USUARIO", usuario.getNombre());
+				//session.invalidate();
+				
+				ServletContext sc = this.getServletContext();// cojo la saca
+				int nlogins = (int) sc.getAttribute("NUM_LOGINS");
+				log.debug("Num logins = " + nlogins);
+				nlogins = nlogins + 1;
+				sc.setAttribute("NUM_LOGINS", nlogins);
+				if (nlogins == 5) {
+					status = HttpURLConnection.HTTP_MOVED_TEMP;
+				}
+
+				break;
+			case 1:
+				status = HttpURLConnection.HTTP_FORBIDDEN;// existe nombre pero pwd mal
+				break;
+			case 2:
+				status = HttpURLConnection.HTTP_NO_CONTENT;// no existe nombre
+				break;
 			}
-			
-				break;
-			case 1: status = HttpURLConnection.HTTP_FORBIDDEN;//existe nombre pero pwd mal
-				break;
-			case 2: status = HttpURLConnection.HTTP_NO_CONTENT;//no existe nombre
-				break;
-			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpURLConnection.HTTP_INTERNAL_ERROR;
 		}
 		log.debug("DEVOLVEMOS STATUS " + status);
-		/*if (redirigir)
-		{
-			//response.sendRedirect("https://euw.leagueoflegends.com/es-es/");
-		} else {*/
-		
+		/*
+		 * if (redirigir) {
+		 * //response.sendRedirect("https://euw.leagueoflegends.com/es-es/"); } else {
+		 */
+
 		response.setStatus(status);
-	
+
 	}
 
 }

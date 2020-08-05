@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -41,6 +42,17 @@ public class ListarUsuariosJSON extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		log.debug("LLAMANDO A PEDIR USUARIOS");
+		HttpSession sesion =  request.getSession(false);//MIRA SI LA PETICIÓN QUE VIENE TRAE SESIÓN y SI NO LA TRAE, NO LE CREES OTRA
+		if (sesion == null)
+		{
+			System.out.println( "La petición NO trae sesión");
+		} else {
+			System.out.println( "La petición SÍ trae sesión " + sesion.getId());
+			//obtenemos su nombre
+			String nombre_usuario = (String)sesion.getAttribute("NOMBRE_USUARIO");
+			System.out.println("Nombre usuario = "+ nombre_usuario);
+			
+		}
 		UsuarioService usuarioService = new UsuarioService();
 		List<Usuario> lu = null;
 		try {

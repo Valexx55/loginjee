@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -53,6 +54,21 @@ public class ListarUsuarioJSON extends HttpServlet {
 		String id_usuario_string = request.getParameter("id");
 		int id_usuario = Integer.parseInt(id_usuario_string);
 		System.out.println("ID rx =  "+ id_usuario);
+		
+		//vamos a ver la sesión que se ha creado
+		//para comprobar si existe o no la sesión, tenemos que usar getsession con false
+		
+		HttpSession sesion =  request.getSession(false);//MIRA SI LA PETICIÓN QUE VIENE TRAE SESIÓN y SI NO LA TRAE, NO LE CREES OTRA
+		if (sesion == null)
+		{
+			System.out.println( "La petición NO trae sesión");
+		} else {
+			System.out.println( "La petición SÍ trae sesión " + sesion.getId());
+			//obtenemos su nombre
+			String nombre_usuario = (String)sesion.getAttribute("NOMBRE_USUARIO");
+			System.out.println("Nombre usuario = "+ nombre_usuario);
+			
+		}
 		//MVC 
 		/**
 		 * Controlador --> Servlet
