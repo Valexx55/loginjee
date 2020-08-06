@@ -2,6 +2,7 @@ package loginjee.controlador;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import loginjee.bean.Usuario;
+import loginjee.servicio.SeguimientoUsuario;
 import loginjee.servicio.UsuarioService;
 
 /**
@@ -45,6 +47,8 @@ public class ListarUsuarioJSON extends HttpServlet {
 
     HACED LAS CAPAS DE SERVICIO Y PERSISTENCIA POR SEPARADO - SI SE PUEDE-*/
 
+   
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -57,18 +61,10 @@ public class ListarUsuarioJSON extends HttpServlet {
 		
 		//vamos a ver la sesión que se ha creado
 		//para comprobar si existe o no la sesión, tenemos que usar getsession con false
+		SeguimientoUsuario.registrarActividad(request);
 		
-		HttpSession sesion =  request.getSession(false);//MIRA SI LA PETICIÓN QUE VIENE TRAE SESIÓN y SI NO LA TRAE, NO LE CREES OTRA
-		if (sesion == null)
-		{
-			System.out.println( "La petición NO trae sesión");
-		} else {
-			System.out.println( "La petición SÍ trae sesión " + sesion.getId());
-			//obtenemos su nombre
-			String nombre_usuario = (String)sesion.getAttribute("NOMBRE_USUARIO");
-			System.out.println("Nombre usuario = "+ nombre_usuario);
 			
-		}
+	
 		//MVC 
 		/**
 		 * Controlador --> Servlet

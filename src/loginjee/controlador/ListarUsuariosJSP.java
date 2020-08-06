@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 
 import loginjee.bean.Usuario;
+import loginjee.servicio.SeguimientoUsuario;
 import loginjee.servicio.UsuarioService;
 
 /**
@@ -41,6 +42,8 @@ public class ListarUsuariosJSP extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		SeguimientoUsuario.registrarActividad(request);
 		log.debug("LLAMANDO A PEDIR USUARIOS");
 		boolean excedido = false;
 

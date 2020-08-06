@@ -3,7 +3,9 @@ package loginjee.controlador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -96,9 +98,12 @@ public class Login extends HttpServlet {
 				//VAMOS A CREAR LA SESIÓN PARA ESE USUARIO :)
 				HttpSession session = request.getSession(true);//este es el saquito de la sesión
 				//session.setMaxInactiveInterval(10);
+				List<String> lista_actividad = new ArrayList<String>();
+				
 				log.debug("El ID de la sesión es " + session.getId());
 				session.setAttribute("NOMBRE_USUARIO", usuario.getNombre());
 				session.setAttribute("NVECES_JSP", 0);
+				session.setAttribute("LISTA_ACTIVIDAD", lista_actividad);
 				//session.invalidate();
 				
 				ServletContext sc = this.getServletContext();// cojo la saca

@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import loginjee.servicio.SeguimientoUsuario;
+
 /**
  * Application Lifecycle Listener implementation class EscuchaSesiones
  *
@@ -37,6 +39,8 @@ public class EscuchaSesiones implements HttpSessionListener {
          // TODO Auto-generated method stub
     	System.out.println("DESTRUIDA LA SESIÓN");
     	System.out.println("IDSession = " + eventosesion.getSession().getId() + " " +new Date());
+    	SeguimientoUsuario.mostrarActividad(eventosesion.getSession());//TODO
+    	//registrar esta actividad en la base de datos
     	
     }
 	

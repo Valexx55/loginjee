@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import loginjee.bean.Usuario;
+import loginjee.servicio.SeguimientoUsuario;
 import loginjee.servicio.UsuarioService;
 
 /**
@@ -52,6 +53,7 @@ public class ListarUsuarioJSONMap extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		SeguimientoUsuario.registrarActividad(request);
 		String id_usuario_string = request.getParameter("id");
 		int id_usuario = Integer.parseInt(id_usuario_string);
 		System.out.println("ID rx =  "+ id_usuario);

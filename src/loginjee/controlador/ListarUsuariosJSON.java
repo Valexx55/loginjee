@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 
 import loginjee.bean.Usuario;
+import loginjee.servicio.SeguimientoUsuario;
 import loginjee.servicio.UsuarioService;
 
 /**
@@ -44,6 +45,8 @@ public class ListarUsuariosJSON extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		log.debug("LLAMANDO A PEDIR USUARIOS");
+		SeguimientoUsuario.registrarActividad(request);
+		
 		HttpSession sesion =  request.getSession(false);//MIRA SI LA PETICIÓN QUE VIENE TRAE SESIÓN y SI NO LA TRAE, NO LE CREES OTRA
 		if (sesion == null)
 		{
