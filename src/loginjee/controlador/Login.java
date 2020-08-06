@@ -95,6 +95,7 @@ public class Login extends HttpServlet {
 				status = HttpURLConnection.HTTP_OK;// existe
 				//VAMOS A CREAR LA SESIÓN PARA ESE USUARIO :)
 				HttpSession session = request.getSession(true);//este es el saquito de la sesión
+				//session.setMaxInactiveInterval(10);
 				log.debug("El ID de la sesión es " + session.getId());
 				session.setAttribute("NOMBRE_USUARIO", usuario.getNombre());
 				session.setAttribute("NVECES_JSP", 0);

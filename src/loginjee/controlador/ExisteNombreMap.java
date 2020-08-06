@@ -2,8 +2,11 @@ package loginjee.controlador;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import loginjee.bean.Usuario;
-import loginjee.servicio.UsuarioService;
 
 /**
  * Servlet implementation class ExisteNombre
  */
-@WebServlet("/ExisteNombre")
-public class ExisteNombre extends HttpServlet {
+@WebServlet("/ExisteNombreMap")
+public class ExisteNombreMap extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private final static Logger log = Logger.getLogger("mylog");
@@ -33,9 +35,37 @@ public class ExisteNombre extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExisteNombre() {
+    public ExisteNombreMap() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    private boolean nombreDisponible (String nombre)
+    {
+    	boolean disponible = true;
+    	Map<Integer, Usuario> ermapa = null;
+    	ServletContext servletContext = null;
+    	Integer clave_aux = 0;
+    	Usuario usuario = null;
+    	String nombre_actual = null;
+    	
+    		servletContext = this.getServletContext();
+    		ermapa = (Map<Integer, Usuario>)servletContext.getAttribute("er_mapa");
+    		//tengo que recorrer el mapa hasta que lo encuentro se acabe el mapa
+    		Set<Integer> conjunto_claves = ermapa.keySet();
+    		Iterator<Integer> iterador = conjunto_claves.iterator();
+    		while (iterador.hasNext()&&disponible)
+    		{
+    			clave_aux = iterador.next();
+    			usuario = ermapa.get(clave_aux);
+    			nombre_actual = usuario.getNombre();
+    			if (nombre_actual.equals(nombre))
+    			{
+    				disponible=false;
+    			}
+    		}
+    		
+    	return disponible;
     }
 
 	/**
@@ -47,9 +77,8 @@ public class ExisteNombre extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		int status = 0;
 		//tengo que ver si ese nombre está en bd
-		UsuarioService usuarioService = new UsuarioService();
 		try {
-			 if (usuarioService.nombreDisponible(nombre))
+			 if (this.nombreDisponible(nombre))
 			 {
 				 status = HttpURLConnection.HTTP_OK;//200 es que está disponible
 			 } else {

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  * Servlet Filter implementation class FiltroMenu
  */
 
-@WebFilter("/menu.html")
+@WebFilter(urlPatterns = {"/menu.html", "/ListarUsuariosJSP", "/ListarUsuarioJSON", "/ListarUsuarioJSONMap", "/ListarUsuarioJSP","/ListarUsuariosJSON"}) 
 public class FiltroMenu implements Filter {
 
     /**

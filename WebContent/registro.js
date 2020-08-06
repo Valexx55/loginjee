@@ -2,7 +2,8 @@
 //LA PWD DEL USUARIO TIENE QUE SER DE AL MENOS 2
 //controlado que nombre no puede estar repe
 
-const ULR_COMPROBAR_NOMBRE_DISPONIBLE = "/loginjee/ExisteNombre"
+//const ULR_COMPROBAR_NOMBRE_DISPONIBLE = "/loginjee/ExisteNombre"
+const ULR_COMPROBAR_NOMBRE_DISPONIBLE = "/loginjee/ExisteNombreMap"
 var xhr = new XMLHttpRequest();
 var nombredisponible = false;
 
