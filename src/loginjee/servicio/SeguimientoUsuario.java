@@ -1,9 +1,12 @@
 package loginjee.servicio;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import loginjee.bean.SesionBean;
 
 public class SeguimientoUsuario {
 	
@@ -25,5 +28,16 @@ public class SeguimientoUsuario {
 				System.out.println(actividad);
 			}
 	    }
+	 
+	 public static void guardarActividad (HttpSession session) {
+		 //aquí tendremos que llamar la capa de persistencia
+		 
+		 SesionBean sesionBean = (SesionBean)session.getAttribute("INFO_SESION");
+		 sesionBean.setTfin(new Date());
+		 //TODO insertar sesionBean en la tabla sesion de la BD
+		 	//necesitarmos el id del usuario FK a partir del nombre
+		//TODO GUARDAR la info de la acttividad en la tabla actividad (que está por hacer)
+		 //CONCEPTO DE TRANSACCIÓN!
+	 }
 
 }

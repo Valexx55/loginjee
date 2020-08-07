@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 
+import loginjee.bean.SesionBean;
 import loginjee.bean.Usuario;
 import loginjee.servicio.UsuarioService;
 
@@ -104,6 +106,13 @@ public class Login extends HttpServlet {
 				session.setAttribute("NOMBRE_USUARIO", usuario.getNombre());
 				session.setAttribute("NVECES_JSP", 0);
 				session.setAttribute("LISTA_ACTIVIDAD", lista_actividad);
+				//obtnego la info de la sesión y la guardo
+				SesionBean sesionBean = new SesionBean();
+				sesionBean.setSesionhttp(session.getId());
+				sesionBean.setTinicio(new Date());
+				sesionBean.setNombre_usuario(usuario.getNombre());
+				session.setAttribute("INFO_SESION", sesionBean);
+				
 				//session.invalidate();
 				
 				ServletContext sc = this.getServletContext();// cojo la saca
