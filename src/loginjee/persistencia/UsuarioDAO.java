@@ -25,6 +25,34 @@ public class UsuarioDAO {
 	private static final String INSTRUCCION_INSERCION_USUARIO = "INSERT INTO hedima.usuarios (nombre, password) VALUES (?, ?);";
 	
 	
+	public Usuario obtenerUsuario (String nombre) throws Exception
+	{
+		Usuario usuario = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+			try {
+				connection = BaseDeDatos.getConnection();
+				preparedStatement = connection.prepareStatement(INSTRUCCION_CONSULTA_USUARIO);
+				preparedStatement.setString(1, nombre);
+				resultSet = preparedStatement.executeQuery();
+				if (resultSet.next())
+				{
+					usuario = new Usuario(resultSet);
+				}
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				log.error("Error al recuperar usuario por nombre ", e);
+				throw e;
+			}finally {
+				BaseDeDatos.liberarRecursos(connection, preparedStatement, resultSet);
+			}
+		
+		return usuario;
+	}
+	
 	public Map<Integer, Usuario> obtenerMapaUsuariosBD () throws Exception
 	{
 		Map<Integer, Usuario> mu = new HashMap<Integer, Usuario>();

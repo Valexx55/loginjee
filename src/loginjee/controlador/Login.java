@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +109,8 @@ public class Login extends HttpServlet {
 				//obtnego la info de la sesión y la guardo
 				SesionBean sesionBean = new SesionBean();
 				sesionBean.setSesionhttp(session.getId());
-				sesionBean.setTinicio(new Date());
+				//sesionBean.setTinicio(new Date());
+				sesionBean.setTinicio(new Date(System.currentTimeMillis()));
 				sesionBean.setNombre_usuario(usuario.getNombre());
 				session.setAttribute("INFO_SESION", sesionBean);
 				

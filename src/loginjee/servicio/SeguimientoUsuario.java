@@ -1,12 +1,17 @@
 package loginjee.servicio;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import loginjee.bean.SesionBean;
+import loginjee.bean.Usuario;
+import loginjee.persistencia.ActividadDAO;
+import loginjee.persistencia.SessionBeanDAO;
+import loginjee.persistencia.UsuarioDAO;
 
 public class SeguimientoUsuario {
 	
@@ -33,7 +38,33 @@ public class SeguimientoUsuario {
 		 //aquí tendremos que llamar la capa de persistencia
 		 
 		 SesionBean sesionBean = (SesionBean)session.getAttribute("INFO_SESION");
-		 sesionBean.setTfin(new Date());
+		 sesionBean.setTfin(new Date(System.currentTimeMillis()));//asigno la fecha fin
+		 
+		
+		 
+		 try {
+			 UsuarioDAO usuarioDAO = new UsuarioDAO();
+			 Usuario u= usuarioDAO.obtenerUsuario(sesionBean.getNombre_usuario());
+			 sesionBean.setIdusuario(u.getId());//asigno el id de usuario
+			 
+			 SessionBeanDAO sessionBeanDAO = new SessionBeanDAO();
+			 sessionBeanDAO.insertarInfoSesion(sesionBean);//TODO mejorar USAR EL TIMESTAMP??registro con el TIEMPO de la sesión. NO SE ESTÄ guardando
+			 
+			 //TODO REVISAR EL ULTIMO EL ID GENERADO
+			 //necesitamos el id de la sesion
+			 int idsesion = sessionBeanDAO.obtenerSesionBeanPorSesionHTTP(sesionBean.getSesionhttp());
+			 
+			 //TODO INSERTAR ACTIVIDADES
+			 ActividadDAO actividadDAO = new ActividadDAO();
+			 List<String> lista_actividad = (List<String>)session.getAttribute("LISTA_ACTIVIDAD");
+			 actividadDAO.guardarActividadesSesion(lista_actividad, idsesion);
+			 
+			 
+		 }catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		 
 		 //TODO insertar sesionBean en la tabla sesion de la BD
 		 	//necesitarmos el id del usuario FK a partir del nombre
 		//TODO GUARDAR la info de la acttividad en la tabla actividad (que está por hacer)

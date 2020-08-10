@@ -1,6 +1,6 @@
 package loginjee.bean;
 
-import java.util.Date;
+import java.sql.Date;;
 
 public class SesionBean {
 	
