@@ -2,6 +2,7 @@ package loginjee.controlador.listener;
 
 import java.util.Date;
 
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -45,6 +46,11 @@ public class EscuchaSesiones implements HttpSessionListener {
     	System.out.println("IDSession = " + eventosesion.getSession().getId() + " " +new Date());
     	SeguimientoUsuario.mostrarActividad(eventosesion.getSession());//TODO
     	SeguimientoUsuario.guardarActividad(eventosesion.getSession());
+    	
+    	ServletContext sc = eventosesion.getSession().getServletContext();
+    	int numusuarios = (int)sc.getAttribute("NUM_USUARIOS");
+		numusuarios = numusuarios-1;
+		sc.setAttribute("NUM_USUARIOS", numusuarios);
     	
     	//TODO registrar esta actividad en la base de datos
     	//1DEFINIR LAS NUEVAS TABLA O TABLA

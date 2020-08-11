@@ -124,6 +124,10 @@ public class Login extends HttpServlet {
 				if (nlogins == 5) {
 					status = HttpURLConnection.HTTP_MOVED_TEMP;
 				}
+				
+				int numusuarios = (int)sc.getAttribute("NUM_USUARIOS");
+				numusuarios = numusuarios+1;
+				sc.setAttribute("NUM_USUARIOS", numusuarios);
 
 				break;
 			case 1:

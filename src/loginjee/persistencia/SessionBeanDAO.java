@@ -55,6 +55,16 @@ public class SessionBeanDAO {
 		
 	}
 	
+	private String sqlDate2String (Date feDate) {
+		String fecha_tiempo = null;
+		
+				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+				fecha_tiempo = sdf.format(feDate);
+			
+			return fecha_tiempo;
+	}
+	
 	public int insertarInfoSesion (SesionBean sesionBean, Connection connection) throws Exception
 	{
 		int id_generado = -1;
@@ -63,7 +73,10 @@ public class SessionBeanDAO {
 		ResultSet rs= null;
 		try {
 			
-			String sql = "INSERT INTO hedima.sesion (idusuario, sesionhttp, tinicio, tfin) VALUES ("+sesionBean.getIdusuario() +",'"+sesionBean.getSesionhttp() +"', '"+sesionBean.getTinicio()+"' ,'"+sesionBean.getTfin()+"');";
+			String fhinicio = sqlDate2String(sesionBean.getTinicio());
+			String fhfin = sqlDate2String(sesionBean.getTfin());
+			
+			String sql = "INSERT INTO hedima.sesion (idusuario, sesionhttp, tinicio, tfin) VALUES ("+sesionBean.getIdusuario() +",'"+sesionBean.getSesionhttp() +"', '"+fhinicio+"' ,'"+fhfin+"');";
 			System.out.println(sql);
 			statement = connection.createStatement();
 			int resultado = statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
