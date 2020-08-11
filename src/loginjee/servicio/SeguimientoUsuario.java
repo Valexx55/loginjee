@@ -1,6 +1,9 @@
 package loginjee.servicio;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import loginjee.bean.SesionBean;
 import loginjee.bean.Usuario;
 import loginjee.persistencia.ActividadDAO;
+import loginjee.persistencia.BaseDeDatos;
 import loginjee.persistencia.SessionBeanDAO;
 import loginjee.persistencia.UsuarioDAO;
 
@@ -39,36 +43,53 @@ public class SeguimientoUsuario {
 		 
 		 SesionBean sesionBean = (SesionBean)session.getAttribute("INFO_SESION");
 		 sesionBean.setTfin(new Date(System.currentTimeMillis()));//asigno la fecha fin
-		 
+		 Connection connection = null;
+		 Savepoint	savepoint = null;
 		
 		 
 		 try {
+			 //INICIO TRANSACCIÓN
 			 UsuarioDAO usuarioDAO = new UsuarioDAO();
 			 Usuario u= usuarioDAO.obtenerUsuario(sesionBean.getNombre_usuario());
 			 sesionBean.setIdusuario(u.getId());//asigno el id de usuario
 			 
+			 connection = BaseDeDatos.getConnection();
+			 connection.setAutoCommit(false);
 			 SessionBeanDAO sessionBeanDAO = new SessionBeanDAO();
-			 sessionBeanDAO.insertarInfoSesion(sesionBean);//TODO mejorar USAR EL TIMESTAMP??registro con el TIEMPO de la sesión. NO SE ESTÄ guardando
+			 //OP1
+			 //sessionBeanDAO.insertarInfoSesion(sesionBean);//TODO mejorar USAR EL TIMESTAMP??registro con el TIEMPO de la sesión. NO SE ESTÄ guardando
+			 int idsesion = sessionBeanDAO.insertarInfoSesion(sesionBean, connection);//TODO mejorar USAR EL TIMESTAMP??registro con el TIEMPO de la sesión. NO SE ESTÄ guardando
+			 //savepoint = connection.setSavepoint();
+			 connection.commit();
 			 
 			 //TODO REVISAR EL ULTIMO EL ID GENERADO
 			 //necesitamos el id de la sesion
-			 int idsesion = sessionBeanDAO.obtenerSesionBeanPorSesionHTTP(sesionBean.getSesionhttp());
+			 //TODO buscar forma alternativa de obtener el último ID generado por la base de datos
+			 //int idsesion = sessionBeanDAO.obtenerSesionBeanPorSesionHTTP(sesionBean.getSesionhttp());
 			 
 			 //TODO INSERTAR ACTIVIDADES
 			 ActividadDAO actividadDAO = new ActividadDAO();
 			 List<String> lista_actividad = (List<String>)session.getAttribute("LISTA_ACTIVIDAD");
-			 actividadDAO.guardarActividadesSesion(lista_actividad, idsesion);
-			 
-			 
+			 //OP2
+			 //actividadDAO.guardarActividadesSesion(lista_actividad, idsesion);
+			 actividadDAO.guardarActividadesSesion(lista_actividad, idsesion, connection);
+			 //FIN TRANSACCIÓN
+			 connection.commit();
 		 }catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			try {
+				//connection.rollback();
+				connection.rollback(savepoint);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+			BaseDeDatos.liberarRecursos(connection, null, null);
 		}
 		 
-		 //TODO insertar sesionBean en la tabla sesion de la BD
-		 	//necesitarmos el id del usuario FK a partir del nombre
-		//TODO GUARDAR la info de la acttividad en la tabla actividad (que está por hacer)
-		 //CONCEPTO DE TRANSACCIÓN!
+		
 	 }
 
 }

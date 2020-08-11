@@ -45,4 +45,28 @@ public class ActividadDAO {
 			BaseDeDatos.liberarRecursos(connection, preparedStatement, null);
 		}
 	}
+	
+	public void guardarActividadesSesion (List<String> lista_actividades, int id_sesion, Connection connection) throws Exception
+	{
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			
+			preparedStatement = connection.prepareStatement(INSTRUCCION_INSERCION_ACTIVIDAD);
+			for (String nactividad : lista_actividades)
+			{
+				preparedStatement.setString(1,  nactividad);
+				preparedStatement.setInt(2,  id_sesion);
+				preparedStatement.executeUpdate();
+				
+			}
+			
+		} catch (Exception e) {
+			log.error("Error guardando actividades ", e);
+			throw e;
+			
+		} finally {
+			BaseDeDatos.liberarRecursos(null, preparedStatement, null);
+		}
+	}
 }

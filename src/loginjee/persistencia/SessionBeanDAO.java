@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +31,7 @@ public class SessionBeanDAO {
 		PreparedStatement preparedStatement = null;
 		try {
 			connection = BaseDeDatos.getConnection();
+			
 			preparedStatement = connection.prepareStatement(INSERTAR_SESION);
 			preparedStatement.setInt(1, sesionBean.getIdusuario());
 			preparedStatement.setString(2, sesionBean.getSesionhttp());
@@ -45,10 +47,44 @@ public class SessionBeanDAO {
 			log.error("Error insertando los datos en la tabla Sesión", e);
 			throw e;
 			
+			
 		}finally {
 			BaseDeDatos.liberarRecursos(connection, preparedStatement, null);
 			
 		}
+		
+	}
+	
+	public int insertarInfoSesion (SesionBean sesionBean, Connection connection) throws Exception
+	{
+		int id_generado = -1;
+		PreparedStatement preparedStatement = null;
+		Statement statement = null;
+		ResultSet rs= null;
+		try {
+			
+			String sql = "INSERT INTO hedima.sesion (idusuario, sesionhttp, tinicio, tfin) VALUES ("+sesionBean.getIdusuario() +",'"+sesionBean.getSesionhttp() +"', '"+sesionBean.getTinicio()+"' ,'"+sesionBean.getTfin()+"');";
+			System.out.println(sql);
+			statement = connection.createStatement();
+			int resultado = statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			rs = statement.getGeneratedKeys();
+			if (rs.next())
+			{
+				id_generado = Integer.parseInt(rs.getString(1));
+				System.out.println("resultado genkeys " + rs.getString(1));
+			}
+			log.debug("Resultado = " + resultado);
+			
+		} catch (Exception e) {
+			log.error("Error insertando los datos en la tabla Sesión", e);
+			throw e;
+			
+			
+		}finally {
+			BaseDeDatos.liberarRecursos(null, preparedStatement, null);
+			
+		}
+		return id_generado;
 		
 	}
 	
@@ -84,6 +120,62 @@ public class SessionBeanDAO {
 		
 		return numsesion;
 	}
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * COMPRAR SERVICE
+	 * 
+	 * COMPRAR	{
+	 * 
+	 *  inicio transacción
+	 *  
+	 *  TRY {
+	 * 		obtengo conexion
+	 * 
+	 * 		1MARCA ASIENTO COMO OCUPADO
+	 *  	2PAGO CON INTERFAZ BANCARIA
+	 *  	3ASIENTO CONTABLE
+	 *  	4EMITE EL BILLETE
+	 *  
+	 *  	commit --confirmo todas las operaciones. Se hacen de verdad
+	 *  }
+	 *  CATCH{
+	 *  	rollback --deshago las operaciones hasta el inicio de la conexion
+	 *  }
+	 *  
+	 *  fin de la trasacción	
+	 *  
+	 * }
+	 */
+	
+	//APLLICACIONES WEB
+	
+			//1 peticion (request) --> 1 transacción || Transaction per request
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
