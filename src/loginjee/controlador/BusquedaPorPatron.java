@@ -59,11 +59,13 @@ public class BusquedaPorPatron extends HttpServlet {
 				 Gson gson = new Gson();
 				 String lista_json_nombres = gson.toJson(lu);
 				 System.out.println("Lnjson = " + lista_json_nombres);
+				 response.getWriter().append(lista_json_nombres);
+				 response.setContentType("application/json");
 				 
 			 }
 			 
 			 else {
-				 status = HttpURLConnection.HTTP_NO_CONTENT;//409 es que no ESTÁ DISPONIBLE
+				 status = HttpURLConnection.HTTP_NO_CONTENT;//204 es que no ESTÁ DISPONIBLE
 			 }
 			
 		} catch (Exception e) {
