@@ -12,6 +12,23 @@
   font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+.container {
+	width: 200px;
+	margin: 0 auto;
+	position: relative;
+	background-color: #FFF;
+}
+#nombrebuscar 
+{
+	width: 97%;
+}
+ul {
+	list-style: none;
+	background-color: #FFF;
+	margin-top: 0;
+	padding-left: 0;
+	width: 100%;
+}
 
 #errornombre
 {

@@ -23,6 +23,7 @@ public class UsuarioDAO {
 	private static final String INSTRUCCION_CONSULTA_TODOS_USUARIO = "SELECT * FROM hedima.usuarios;";
 	private static final String INSTRUCCION_CONSULTA_USUARIO_POR_ID = "SELECT * from hedima.usuarios where idusuarios = ?;";
 	private static final String INSTRUCCION_INSERCION_USUARIO = "INSERT INTO hedima.usuarios (nombre, password) VALUES (?, ?);";
+	public final static  String BUSCAR_USUARTIOS_POR_PATRON_NOMBRE = "SELECT nombre FROM hedima.usuarios WHERE nombre like ?;"; 
 	
 	
 	public Usuario obtenerUsuario (String nombre) throws Exception
@@ -154,6 +155,40 @@ public class UsuarioDAO {
 				while (resultSet.next()) {
 					usuario_aux = new Usuario(resultSet);
 					lista_usuarios.add(usuario_aux);
+				}
+				
+			}catch (Exception e) {
+				log.error("Error al acceder a la base de datos", e);
+				throw e;
+			}finally {
+				BaseDeDatos.liberarRecursos(connection, statement, resultSet);
+			
+			}
+		
+		return lista_usuarios;
+		
+	}
+	
+	public List<String> consultaNombresPorPatron (String nombre) throws Exception
+	{
+		List<String> lista_usuarios = null;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		String nombre_aux = null;
+		
+		
+			try {
+				
+				connection = BaseDeDatos.getConnection();
+				statement = connection.prepareStatement(BUSCAR_USUARTIOS_POR_PATRON_NOMBRE);
+				statement.setString(1, "%"+nombre+"%");
+				resultSet = statement.executeQuery();
+				
+				lista_usuarios = new ArrayList<String>();//creo la lista vacía
+				while (resultSet.next()) {
+					nombre_aux = resultSet.getString(1);
+					lista_usuarios.add(nombre_aux);
 				}
 				
 			}catch (Exception e) {

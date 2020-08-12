@@ -66,6 +66,16 @@ public class UsuarioService {
 
 		return disponible;
 	}
+	
+	public List<String> getNombresPatron(String patron) throws Exception {
+		List<String> ln = null;
+		UsuarioDAO usuarioDAO = null;
+		
+			usuarioDAO = new UsuarioDAO();
+			ln = usuarioDAO.consultaNombresPorPatron(patron);
+		
+		return ln;
+	}
 
 	/**
 	 * Método que comprueba si el usuario recibido existe en el sistema
