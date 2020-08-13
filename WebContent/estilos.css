@@ -16,13 +16,23 @@
 	width: 200px;
 	margin: 0 auto;
 	position: relative;
+}
+.container2 {
+	width: 200px;
+	margin: 0 auto;
+	position: relative;
+}
+.container1 {
+	width: 200px;
+	margin: 0 auto;
+	position: relative;
 	background-color: #FFF;
 }
 #nombrebuscar 
 {
 	width: 97%;
 }
-ul {
+#listasugerencias {
 	list-style: none;
 	background-color: #FFF;
 	margin-top: 0;

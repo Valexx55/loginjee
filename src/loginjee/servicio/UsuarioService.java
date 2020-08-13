@@ -30,6 +30,15 @@ public class UsuarioService {
 
 		return usuario;
 	}
+	
+	public Usuario obtenerUsuario(String nombre) throws Exception {
+		Usuario usuario = null;
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		usuario = usuarioDAO.obtenerUsuario(nombre);
+
+		return usuario;
+	}
 
 	public List<Usuario> listarUsuarios() throws Exception {
 		List<Usuario> lUsuarios = null;

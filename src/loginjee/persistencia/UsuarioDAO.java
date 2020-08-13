@@ -182,7 +182,8 @@ public class UsuarioDAO {
 				
 				connection = BaseDeDatos.getConnection();
 				statement = connection.prepareStatement(BUSCAR_USUARTIOS_POR_PATRON_NOMBRE);
-				statement.setString(1, "%"+nombre+"%");
+				//statement.setString(1, "%"+nombre+"%");
+				statement.setString(1, nombre+"%");
 				resultSet = statement.executeQuery();
 				
 				lista_usuarios = new ArrayList<String>();//creo la lista vacía
